@@ -1,0 +1,2 @@
+# boot_vuex_demo
+简单的单模块spring和vuex的demo
