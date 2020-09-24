@@ -4,6 +4,7 @@ import com.example.demo.entity.StaticFileObj;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.DataGrid;
+import com.example.demo.utils.RedisUtils;
 import com.example.demo.utils.excel.ExcelData;
 import com.example.demo.utils.excel.ExportExcelUtils;
 import com.example.demo.vo.UserListRequestVo;
@@ -25,9 +26,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @RequestMapping(value = "path/{id}", method = RequestMethod.GET)
     public DataGrid<User> getPath(@PathVariable("id") String id) {
-
         return userService.getOne(id);
     }
 
