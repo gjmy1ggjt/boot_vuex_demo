@@ -7,11 +7,16 @@ spring:
   redis:
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
-    host: r-wz9e99b46daed7c4.redis.rds.aliyuncs.com
-#    host: redis://r-wz9e99b46daed7c4.redis.rds.aliyuncs.com
+#    -----------------------------------------------------
+#    测试环境
+    host: r-wz9b776df39f2944.redis.rds.aliyuncs.com
     port: 6379
-#    uri: redis://r-wz9e99b46daed7c4.redis.rds.aliyuncs.com:6379
-    password: ZVgd96NuxcfkahrM   # 密码（默认为空）
+    password: 1030X25xR   # 密码（默认为空）
+#    -----------------------------------------------------
+#    线上环境
+    #    host: r-wz9e99b46daed7c4.redis.rds.aliyuncs.com
+#    password: ZVgd96NuxcfkahrM   # 密码（默认为空）
+#-----------------------------------------------------
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:

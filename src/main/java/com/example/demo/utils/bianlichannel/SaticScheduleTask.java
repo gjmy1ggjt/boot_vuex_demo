@@ -3,6 +3,7 @@ package com.example.demo.utils.bianlichannel;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import com.example.demo.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.demo.utils.bianlichannel.Consts.*;
 
@@ -27,39 +25,46 @@ public class SaticScheduleTask {
 
     //3.添加定时任务
 //    @Scheduled(cron = "0/5 * * * * ?")
-    //或直接指定时间间隔，例如：5秒
-    @Scheduled(fixedRate = 5000)
+//        定时2分钟执行一次
+    @Scheduled(fixedRate = TOUCH_TEST_TIME)
     private void configureTasks() {
 
-        for (Integer channel : channelList) {
+        System.out.println("定时任务开启");
 
-            Map<String, Object> row = new LinkedHashMap<>();
-            row.put("deviceCode设备码", DEVICE_CODE);
-            row.put("货道", channel);
-            row.put("层数", grade);
+            for (Integer channel : channelList) {
+                Map<String, Object> row = new LinkedHashMap<>();
+                row.put("deviceCode设备码", DEVICE_CODE);
+                row.put("货道", channel);
+                row.put("层数", GRADE);
 
-            boolean bhd = redisTemplate.hasKey(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + grade);
+                boolean bhd = redisTemplate.hasKey(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + GRADE);
+                Object finishNumber = "完成转动时,redis存的数字异常";
 
-            Object finishNumber = redisTemplate.opsForValue().get(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + grade);
+                if (true == bhd) {
+                    finishNumber = redisTemplate.opsForValue().get(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + GRADE);
+                }
+                row.put("完成后返回数字", finishNumber);
+                row.put("设备转动时间", "暂时无法获取");
+                row.put("获取数据的时间", DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN));
 
-            row.put("完成后返回数字", finishNumber);
+                excelExportList.add(row);
+            }
+            COUNT++;
+            System.out.println("定时任务开启第" + COUNT + "次");
 
-            row.put("设备转动时间", "暂时无法获取");
+            if (COUNT == EXCEL_SIZE) {
+                System.out.println("开始生成excel");
+                COUNT = 0;
+                ExcelUtils excelUtils = new ExcelUtils();
+                excelUtils.exportLocal("E:/test/excel/writeMapTest" + DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN) + ".xlsx", excelExportList);
+                excelExportList = new ArrayList<>(EXCEL_LIST_SIZE);
+            }
 
-            row.put("获取数据的时间", DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN));
+        Map map = new HashMap();
+        map.put("params", PUSH_BATCH_PARAMS);
+        String result = HttpUtil.post(PUSH_BATCH_URL, map);
 
-            list.add(row);
-        }
-        count ++ ;
-        System.out.println("定时任务开启" + count);
-        if (count == excelSize) {
-            System.out.println("开始生成excel");
-            count = 0;
-
-            ExcelUtils excelUtils = new ExcelUtils();
-            excelUtils.exportLocal("E:/test/writeMapTest" + DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN) + ".xlsx" , list);
-            list = new ArrayList<>(excelSize);
-        }
+        System.out.println("接口请求结果:" + result);
     }
 
     public static String requestGet(String url, Map paramMap) {
@@ -70,5 +75,15 @@ public class SaticScheduleTask {
                 .execute().body();
 
         return result;
+    }
+
+
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        map.put("params", PUSH_BATCH_PARAMS);
+
+        String result = HttpUtil.post(PUSH_BATCH_URL, map);
+
+        System.out.println(result);
     }
 }
