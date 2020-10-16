@@ -25,7 +25,7 @@ public class SaticScheduleTask {
 
     //3.添加定时任务
 //    @Scheduled(cron = "0/5 * * * * ?")
-//        定时2分钟执行一次
+//        定时1分钟执行一次
     @Scheduled(fixedRate = TOUCH_TEST_TIME)
     private void configureTasks() {
 
@@ -37,11 +37,14 @@ public class SaticScheduleTask {
                 row.put("货道", channel);
                 row.put("层数", GRADE);
 
-                boolean bhd = redisTemplate.hasKey(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + GRADE);
+                String finishNumberKey = DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + GRADE;
+
+                boolean bhd = redisTemplate.hasKey(finishNumberKey);
+
                 Object finishNumber = "完成转动时,redis存的数字异常";
 
-                if (true == bhd) {
-                    finishNumber = redisTemplate.opsForValue().get(DEVICE_PUSH_STATUS + DEVICE_CODE + POINT + channel + POINT + GRADE);
+                if (bhd) {
+                    finishNumber = redisTemplate.opsForValue().get(finishNumberKey);
                 }
                 row.put("完成后返回数字", finishNumber);
                 row.put("设备转动时间", "暂时无法获取");
@@ -56,7 +59,8 @@ public class SaticScheduleTask {
                 System.out.println("开始生成excel");
                 COUNT = 0;
                 ExcelUtils excelUtils = new ExcelUtils();
-                excelUtils.exportLocal("E:/test/excel/writeMapTest" + DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN) + ".xlsx", excelExportList);
+                String fileName = "E:/test/excel/" + DEVICE_CODE + "___" + DateUtil.format(new Date(), DatePattern.CHINESE_DATE_TIME_PATTERN) + ".xlsx";
+                excelUtils.exportLocal(fileName, excelExportList);
                 excelExportList = new ArrayList<>(EXCEL_LIST_SIZE);
             }
 
@@ -69,8 +73,7 @@ public class SaticScheduleTask {
 
     public static String requestGet(String url, Map paramMap) {
 
-        String result = HttpRequest.get(url)
-                .header("token", TOKEN)//头信息，多个头信息多次调用此方法即可
+        String result = HttpRequest.get(url)//头信息，多个头信息多次调用此方法即可
                 .form(paramMap)
                 .execute().body();
 
@@ -81,8 +84,10 @@ public class SaticScheduleTask {
     public static void main(String[] args) {
         Map map = new HashMap();
         map.put("params", PUSH_BATCH_PARAMS);
+//
+//        String result = HttpUtil.post(PUSH_BATCH_URL, map);
 
-        String result = HttpUtil.post(PUSH_BATCH_URL, map);
+        String result = requestGet(PUSH_BATCH_URL, map);
 
         System.out.println(result);
     }
