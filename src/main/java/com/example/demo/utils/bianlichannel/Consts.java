@@ -23,10 +23,9 @@ public class Consts {
 //    public final static String DEVICE_CODE = "1050010004";
 //    public final static String DEVICE_CODE = "1050010005";
 //    public final static String DEVICE_CODE = "1050010007";
-    public final static String DEVICE_CODE = "1050010008";
+    public final static String DEVICE_CODE = "1050010011";
 
 //    public final static String DEVICE_CODE = "1050010010";
-//    public final static String DEVICE_CODE = "1050010011";
 
 
     public final static String POINT = ",";

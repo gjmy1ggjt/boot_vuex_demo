@@ -12,7 +12,7 @@ public class WXcodeTest {
 
         String requestUrl = "https://api.weixin.qq.com/sns/jscode2session";
 
-        String wxCode = "0013310000bisK12j4400P2UDn23310k";
+        String wxCode = "061OCh000Cw5wK1spn100uoJon4OCh0c";
 
         Map<String,String> requestUrlParam = new HashMap<String, String>(  );
         requestUrlParam.put( "appid","wx4bb223a490ec0b7d" );//小程序appId

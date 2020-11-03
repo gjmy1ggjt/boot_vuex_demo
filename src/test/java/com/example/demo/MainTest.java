@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 public class MainTest {
@@ -12,12 +13,33 @@ public class MainTest {
 //        testScheduleThread();
 //        testScheduleRoundThread();
 //        testFixedThread2();
+   String x = "http://10.10.1.139:8912/wx_mini_contract/signUrlByRecordId?recordId=94&type=wxe";
+
+   String y = "wx_mini_contract/signUrlByRecordId";
+//   String y = "wx_mini_contract//signUrlByRecordId";
 
 
+//        System.out.println(x.contains(y));
+//        hanzi_daozhuang();
+
+        Object s = 1110;
+
+        if (s instanceof Number) {
+            System.out.println("num");
+        }
 
     }
 
+    public static void hanzi_daozhuang(){
+        String name = "林卓吧";
 
+        int length = name.length();
+
+        String first = name.substring(0, 1);
+        String last = name.substring(1, length);
+        System.out.println("f" + first + "-----last" + last);
+
+    }
 
     public static void testCacheThread() {
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
