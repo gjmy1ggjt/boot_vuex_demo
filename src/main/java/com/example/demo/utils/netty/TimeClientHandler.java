@@ -4,13 +4,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
 import java.util.logging.Logger;
+
 /**
  * Created by Administrator on 2017/5/17.
  * 用于对网络事件进行读写操作
  */
 public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = Logger.getLogger(TimeClientHandler.class.getName());
+
     /**
      * 当客户端和服务端 TCP 链路建立成功之后，Netty 的 NIO 线程会调用 channelActive 方法
      */

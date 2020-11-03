@@ -2,11 +2,14 @@ package com.example.demo.utils.netty;
 
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import java.beans.beancontext.BeanContextChildComponentProxy;
+
 /**
  * Created by Administrator on 2017/5/16.
  */
@@ -15,6 +18,7 @@ public class TimeServer {
         int port = 9898;
         new TimeServer().bind(port);
     }
+
     public void bind(int port) {
         /**
          * interface EventLoopGroup extends EventExecutorGroup extends ScheduledExecutorService extends ExecutorService
