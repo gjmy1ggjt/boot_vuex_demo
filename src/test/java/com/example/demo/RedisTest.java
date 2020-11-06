@@ -4,19 +4,14 @@
 //import cn.hutool.core.lang.Console;
 //import cn.hutool.cron.CronUtil;
 //import cn.hutool.cron.task.Task;
-//import com.alibaba.fastjson.JSONObject;
 //import com.example.demo.utils.RedisUtils;
 //import org.junit.jupiter.api.Test;
 //import org.junit.runner.RunWith;
-//import org.quartz.SchedulerException;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.data.redis.core.StringRedisTemplate;
 //import org.springframework.test.context.junit4.SpringRunner;
-//
-//import java.io.ByteArrayInputStream;
-//import java.io.ObjectInputStream;
 //
 //import static com.example.demo.MyJob.*;
 //
